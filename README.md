@@ -2,21 +2,25 @@
 
 This project predicts **hourly electricity prices** using **time series data** of energy consumption and weather conditions across major cities in Spain. It uses deep learning (LSTM) with carefully engineered features and sequence-based inputs.
 
----
+
 
 ## 📁 Project Structure
 
-├── Electricity_Price_Forecasting_Project_Using_Weather_and_Energy_Data_With_Time_Series_Analysis.ipynb
-├── energy_dataset.csv
-├── weather_features.csv
-├── multivariate_lstm.h5
-├── README.md
-
-
-
 ---
 
+1. Electricity_Price_Forecasting_Project_Using_Weather_and_Energy_Data_With_Time_Series_Analysis.ipynb
+2.  energy_dataset.csv
+3. weather_features.csv
+4. multivariate_lstm.h5
+5. README.md
+
+
+
+
+
 ## 📌 Problem Statement
+
+---
 
 Electricity prices are influenced by factors like weather, energy load, and time. This project aims to **forecast the next hour’s electricity price** using historical data and time series modeling. Accurate forecasts can help improve energy trading, planning, and grid management.
 
@@ -91,17 +95,22 @@ model = Sequential([
     Dense(1)  # For single-step prediction
 ])
 
+```
 ---
 
 ## 🧪 Training
 ```
-model.compile(optimizer='adam',
-              loss='mean_squared_error',
-              metrics=[tf.keras.metrics.RootMeanSquaredError()])
+model_checkpoint = tf.keras.callbacks.ModelCheckpoint(
+                   'multivariate_lstm.h5', monitor=('val_loss'), save_best_only=True)
+optimizer = tf.keras.optimizers.Adam(lr=6e-3, amsgrad=True)
 
-model.fit(X_train, y_train,
-          validation_data=(X_val, y_val),
-          epochs=100,
-          callbacks=[EarlyStopping(patience=10)])
+multivariate_lstm.compile(loss=loss,
+                          optimizer=optimizer,
+                          metrics=metric)
+history = multivariate_lstm.fit(train, epochs=120,
+                                validation_data=validation,
+                                callbacks=[early_stopping, 
+                                           model_checkpoint])
+
 ```
 
